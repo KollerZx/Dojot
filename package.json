@@ -1,0 +1,24 @@
+{
+  "name": "applications",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "mqtt": "nodemon src/Dojot/api/mqtt.js",
+    "history": "nodemon src/Dojot/api/history.js",
+    "kafka": "nodemon src/Dojot/api/Kafka-Consumer/kafkajs.js",
+    "start": "nodemon src/Dojot/api/Kafka-WS/index.js"
+  },
+  "dependencies": {
+    "@dojot/microservice-sdk": "^0.2.0-beta.5",
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "kafkajs": "^2.1.0",
+    "mqtt": "^4.3.7",
+    "ws": "^8.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "sucrase": "^3.23.0"
+  }
+}
