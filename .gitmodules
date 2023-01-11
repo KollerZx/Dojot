@@ -1,0 +1,3 @@
+[submodule "dojot-docker-compose"]
+	path = dojot-docker-compose
+	url = git@github.com:opendojot/docker-compose.git
