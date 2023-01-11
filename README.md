@@ -19,7 +19,7 @@ After, run bellow comands on terminal:
     
 ## In Build :hammer_and_wrench: :hourglass_flowing_sand:
 
-This project it´s in build... 
+This project is in building... 
 
 
 ## Licença
