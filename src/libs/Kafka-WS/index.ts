@@ -12,7 +12,7 @@ import { getTicket } from '../../utils/ticket'
         const socket = new WebSocket(upgradeUrl)
         socket.on('open', () => {
             console.log('connected usando modulo ws', socket.OPEN)
-            socket.on('message', (data) => {
+            socket.on('message', (data: any) => {
                 console.log(data.toString())
             })
         })

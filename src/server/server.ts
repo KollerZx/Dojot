@@ -1,5 +1,5 @@
 import express from 'express'
-import { mosquittoPub } from './server'
+import { mosquittoPub } from '../utils/mosquittoPub'
 
 const app = express()
 
