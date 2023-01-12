@@ -5,7 +5,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "kafkajs": "node dist/libs/Kafka-Consumer/kafkajs.js",
+    "kafkaws": "node dist/libs/Kafka-WS/index.js",
+    "mqtt:client": "node dist/libs/mqtt.js"
   },
   "dependencies": {
     "@dojot/microservice-sdk": "^0.2.0-beta.5",

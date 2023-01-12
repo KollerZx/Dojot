@@ -1,16 +1,17 @@
-import fs from 'fs'
+import fs from 'node:fs'
+
 import mqtt, { IClientOptions } from 'mqtt'
-import path from 'path'
+
 /** NOTE: Deve ser gerado um certificado para cada dispositivo cadastrado
  * Através do script: certereq.sh
  * ou Através da interface do dojot
  */
 
-const device_id = '425871'
+const device_id = '35d145'
 const options: IClientOptions = {
-    key: fs.readFileSync(path.join(__dirname, `./certs/cert_${device_id}/private.key`)),
-    cert: fs.readFileSync(path.join(__dirname, `./certs/cert_${device_id}/cert.pem`)),
-    ca: fs.readFileSync(path.join(__dirname, './certs/ca/ca.pem')),
+    key: fs.readFileSync(`./certs/cert_${device_id}/private.key`),
+    cert: fs.readFileSync(`./certs/cert_${device_id}/cert.pem`),
+    ca: fs.readFileSync('./certs/ca/ca.pem'),
     clientId: 'simple-mqtt-client',
     rejectUnauthorized: false,
     protocol: 'mqtts',
@@ -40,4 +41,4 @@ async function runMqtt(tenant: string, device_id: string, attr: string, value?: 
     })
 }
 
-runMqtt('admin', '425871', 'temperature')
+runMqtt('admin', '35d145', 'temperature')
