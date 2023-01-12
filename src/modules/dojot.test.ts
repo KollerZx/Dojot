@@ -7,6 +7,7 @@ describe('Devices', () => {
   let dojot: Dojot
   let template_id: number
   let device_id: string
+  let user_id: string
   beforeAll(async () => {
     const host = process.env.DOJOT_HOST
     const port = Number(process.env.DOJOT_PORT)
@@ -19,6 +20,7 @@ describe('Devices', () => {
   afterEach(async () => {
     await dojot.deleteAllDevices()
     await dojot.deleteAllTemplates()
+    if (user_id) await dojot.removeUser(user_id)
   })
   it('Should be able to register a new template', async () => {
     const response = await dojot.createTemplate({
@@ -126,5 +128,19 @@ describe('Devices', () => {
     })
 
     expect(response.devices.length).toBe(3)
+  })
+
+  it('Should be able to create a new user', async () => {
+    const [response] = await dojot.createUser({
+      name: "catarino",
+      username: "catarino",
+      email: "catarino@aceno.com",
+      confirmEmail: "catarino@aceno.com",
+      profile: "user",
+      service: "catarino"
+    })
+    user_id = response.user.id
+
+    expect(response).toHaveProperty('message', 'user created')
   })
 })

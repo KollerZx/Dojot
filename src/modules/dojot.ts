@@ -1,5 +1,6 @@
-import { RegisterDeviceRequest, TemplateDevice } from "../types";
+import { RegisterDeviceRequest, TemplateDevice, CreateUserRequest } from "../types";
 import axios, { AxiosError } from 'axios';
+import { randomUUID } from "crypto";
 import WebSocket from 'ws'
 export class Dojot {
   private jwt: string
@@ -46,6 +47,44 @@ export class Dojot {
     })
 
     this.ticket = data.ticket
+  }
+
+  // TODO: Analisar se o service pode ser o company_id
+
+  async createUser({ name, username, email, confirmEmail, profile, service }: CreateUserRequest) {
+    try {
+
+      const id = randomUUID()
+      const { data } = await axios.post(`${this.url}/auth/user`, {
+        name,
+        username,
+        profile,
+        email,
+        confirmEmail,
+        service,
+        id
+      }, {
+        headers: this.headers
+      })
+
+      return data
+    } catch (error) {
+      console.log(error);
+
+    }
+
+  }
+
+  async removeUser(id: string) {
+    try {
+      const { data } = await axios.delete(`${this.url}/auth/user/${id}`, {
+        headers: this.headers
+      })
+
+      return data
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async createTemplate({ label, attrs }: TemplateDevice) {

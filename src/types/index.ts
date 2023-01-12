@@ -19,3 +19,12 @@ export type RegisterDeviceRequest = {
   count?: number
   verbose?: boolean
 }
+
+export type CreateUserRequest = {
+  name: string
+  username: string
+  profile: "user" | "admin"
+  email: string
+  confirmEmail: string
+  service: string
+}
