@@ -1,6 +1,6 @@
 const { Kafka: { Consumer } } = require('@dojot/microservice-sdk');
 
-//NOTE: O consumer só funciona dessa forma, se expor no docker-compose a porta do kafka 9092:9092
+// NOTE: This implementation recommended by the lib, it only works this way if you expose kafka port 9092:9092 in docker-compose
 const consumer = new Consumer({
     'enable.async.commit': true,
     'kafka.consumer': {
@@ -15,7 +15,7 @@ consumer.on('disconnected', () => console.log('Received disconnected event'));
 consumer.on('paused', () => console.log('Received paused event'));
 consumer.on('resumed', () => console.log('Received resumed event'));
 consumer.on('error.connecting', () => console.log('Received error.connecting event'));
-consumer.on('error.processing', (cbId, data) => console.log(`Received error.processing event (cbId: ${cbId}: data: ${JSON.stringfy(data)}`));
+consumer.on('error.processing', (cbId, data) => console.log(`Received error.processing event (cbId: ${cbId}: data: ${JSON.stringify(data)}`));
 
 consumer.init().then(() => {
     // the target kafka topic, it could be a String or a RegExp

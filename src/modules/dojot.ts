@@ -60,8 +60,6 @@ export class Dojot {
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error);
-
         throw new Error(`"Request Axios Error on Create Template" ${error.message}`)
       }
       else {
@@ -206,7 +204,7 @@ export class Dojot {
       const socket = new WebSocket(urlUpgrade)
 
       socket.on('open', () => {
-        console.log('connected usando modulo ws', socket.readyState)
+        console.log('connected', socket.readyState)
         socket.on('message', (data: any) => {
           console.log(data.toString())
         })

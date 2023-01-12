@@ -1,10 +1,18 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { Dojot } from './dojot';
+
 describe('Devices', () => {
   let dojot: Dojot
   let template_id: number
   let device_id: string
   beforeAll(async () => {
-    dojot = new Dojot('localhost', 8000, 'admin', 'admin')
+    const host = process.env.DOJOT_HOST
+    const port = Number(process.env.DOJOT_PORT)
+    const username = process.env.DOJOT_USERNAME
+    const password = process.env.DOJOT_PASSWORD
+    dojot = new Dojot(host, port, username, password)
     await dojot.auth()
   })
 
@@ -12,7 +20,7 @@ describe('Devices', () => {
     await dojot.deleteAllDevices()
     await dojot.deleteAllTemplates()
   })
-  it('Deve ser possível cadastrar um novo template', async () => {
+  it('Should be able to register a new template', async () => {
     const response = await dojot.createTemplate({
       label: "Thermometer Template",
       attrs: [
@@ -32,7 +40,7 @@ describe('Devices', () => {
     expect(response).toHaveProperty('result', "ok")
   })
 
-  it('Deve retornar todos templates cadastrados', async () => {
+  it('Should return all templates', async () => {
     await dojot.createTemplate({
       label: "Thermometer Template",
       attrs: [
@@ -54,7 +62,7 @@ describe('Devices', () => {
     expect(data.templates.length).toBeGreaterThan(0)
   })
 
-  it('Deve ser possível cadastrar um novo dispositivo', async () => {
+  it('Should be able to register a new device', async () => {
     const result = await dojot.createTemplate({
       label: "Tag RTLS Template",
       attrs: [
@@ -88,8 +96,7 @@ describe('Devices', () => {
     expect(device).toHaveProperty('label', 'Tag-RTLS')
 
   })
-
-  it('Deve retornar todos os dispositivos cadastrados', async () => {
+  it('Should return all devices', async () => {
     const result = await dojot.createTemplate({
       label: "Tag RTLS Template",
       attrs: [

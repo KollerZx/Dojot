@@ -1,6 +1,7 @@
 import { Kafka } from "kafkajs"
-//NOTE: O consumer só funciona dessa forma, se expor no docker-compose a porta do kafka 9092:9092
-const run = async () => {
+
+// NOTE: This implementation it only works this way if you expose kafka port 9092:9092 in docker-compose
+const run = async (tenant: string) => {
     const kafka = new Kafka({
         clientId: 'my-app',
         brokers: ['kafka:9092']
@@ -9,7 +10,7 @@ const run = async () => {
     const consumer = kafka.consumer({ groupId: 'my-group' })
     await consumer.connect()
     await consumer.subscribe({
-        topic: 'admin.device-data',
+        topic: `${tenant}.device-data`,
         fromBeginning: true
     })
     await consumer.run({
@@ -19,4 +20,4 @@ const run = async () => {
     })
 }
 
-run().catch(console.error)
+run('admin').catch(console.error)
