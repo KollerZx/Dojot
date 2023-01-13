@@ -98,6 +98,7 @@ describe('Devices', () => {
     expect(device).toHaveProperty('label', 'Tag-RTLS')
 
   })
+
   it('Should return all devices', async () => {
     const result = await dojot.createTemplate({
       label: "Tag RTLS Template",
@@ -142,5 +143,42 @@ describe('Devices', () => {
     user_id = response.user.id
 
     expect(response).toHaveProperty('message', 'user created')
+  })
+
+  it('Should be able to register a new device and generate a trusted CA', async () => {
+    const result = await dojot.createTemplate({
+      label: "Tag RTLS Template",
+      attrs: [
+        {
+          label: "Axis_X",
+          type: "dynamic",
+          value_type: "float"
+        },
+        {
+          label: "Axis_Y",
+          type: "dynamic",
+          value_type: "float"
+        }
+      ]
+    })
+
+    template_id = result.template.id
+
+    const response = await dojot.registerDevice({
+      data: {
+        templates: [
+          template_id
+        ],
+        label: 'Tag-RTLS'
+      }
+    })
+
+    const [device] = response.devices
+
+    device_id = device.id
+
+    const responseCA = await dojot.generateTrustedCA(device_id)
+
+    expect(responseCA).toHaveProperty('status', 'ok')
   })
 })

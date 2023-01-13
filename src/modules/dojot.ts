@@ -2,6 +2,7 @@ import { RegisterDeviceRequest, TemplateDevice, CreateUserRequest } from "../typ
 import axios, { AxiosError } from 'axios';
 import { randomUUID } from "crypto";
 import WebSocket from 'ws'
+import { getTrustedCA } from "../utils/getTrustedCA";
 export class Dojot {
   private jwt: string
   private ticket: string
@@ -148,6 +149,27 @@ export class Dojot {
         throw new Error("Request Error")
       }
     }
+  }
+
+  async getDevice(id: string) {
+    try {
+      const { data } = await axios.get(`${this.url}/device/${id}`, {
+        headers: this.headers
+      })
+
+      return data
+    } catch (error) {
+      throw new Error('Request Axios Error', error.message)
+    }
+  }
+
+  async generateTrustedCA(device_id: string) {
+    const deviceExists = await this.getDevice(device_id)
+    if (!deviceExists) throw new Error('Device not found')
+    const username = this.username
+    const password = this.passwd
+    const response = await getTrustedCA(device_id, username, password)
+    return response
   }
 
   async getHistory(device_id: string, attr: string, limit?: number) {

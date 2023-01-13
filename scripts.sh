@@ -7,9 +7,10 @@ mosquitto_pub -h 192.168.0.123 -p 8883 -u admin:35d145 -t admin:35d145/attrs -m 
 ./certreq.sh \
   -h http://localhost \
   -p 8000 \
-  -i '35d145' \
+  -i 'bf981a' \
   -u 'admin' \
   -s 'admin'
+
 
 curl -X POST http://localhost:8000/auth/user \
 -H "Authorization: Bearer ${JWT}" \
@@ -25,8 +26,37 @@ curl -X POST http://localhost:8000/auth/user \
 }'
 
 
-d26772dd-61ea-7910-2040-11f80513a796
+JWT=$(curl -s -X POST http://localhost:8000/auth \
+-H 'Content-Type:application/json' \
+-d '{"username": "admin", "passwd" : "admin"}' | jq -r ".jwt")
 
 
+curl -X POST http://localhost:8000/template \
+-H "Authorization: Bearer ${JWT}" \
+-H 'Content-Type:application/json' \
+-d ' {
+  "label": "Thermometer Template",
+  "attrs": [
+    {
+      "label": "temperature",
+      "type": "dynamic",
+      "value_type": "float"
+    },
+    {
+      "label": "fan",
+      "type": "actuator",
+      "value_type": "float"
+    }
+  ]
+}'
 
 
+curl -X POST http://localhost:8000/device \
+-H "Authorization: Bearer ${JWT}" \
+-H 'Content-Type:application/json' \
+-d ' {
+  "templates": [
+    "1"
+  ],
+  "label": "device"
+}'
